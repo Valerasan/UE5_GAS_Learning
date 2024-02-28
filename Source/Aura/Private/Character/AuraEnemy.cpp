@@ -46,6 +46,13 @@ int32 AAuraEnemy::GetPlayerLevel()
 	return Level;
 }
 
+void AAuraEnemy::Die()
+{
+	SetLifeSpan(LifeSpan);
+	
+	Super::Die();
+}
+
 void AAuraEnemy::HitReactingChanged(const FGameplayTag CallBackTag, int32 NewCount)
 {
 	bHitReacting = NewCount > 0;
