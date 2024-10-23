@@ -7,6 +7,7 @@
 #include "AuraProjectileSpell.generated.h"
 
 class AAuraProjectile;
+struct FGameplayTag;
 /**
  * 
  */
@@ -25,7 +26,7 @@ protected:
 protected:
 
 	UFUNCTION(BlueprintCallable, Category = "Projectile")
-	void SpawnProjectile(const FVector& ProjectileTargetLocation);
+	void SpawnProjectile(const FVector& ProjectileTargetLocation, const FGameplayTag& SocketTag);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TSubclassOf<AAuraProjectile> ProjectileClass;

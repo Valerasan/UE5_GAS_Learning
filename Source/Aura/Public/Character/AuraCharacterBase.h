@@ -56,6 +56,9 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Combat")
 	FName RightHandTipSocketName;
 
+	UPROPERTY(EditAnywhere, Category = "Combat")
+	FName TailTipSocketName;
+
 	bool bDead = false;
 
 	UPROPERTY()
