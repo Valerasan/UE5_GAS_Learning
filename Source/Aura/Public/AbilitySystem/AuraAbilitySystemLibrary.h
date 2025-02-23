@@ -34,6 +34,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySysstemLibrary|ClassDefaults")
 	static void GiveStartupAbilities(const UObject* WorldContextObject, UAbilitySystemComponent* ASC, ECharacterClass CharacterClass);
 
+	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AuraAbilitySysstemLibrary|ClassDefaults")
+	static int32 GetXPRewardForClassAndLevel(const UObject* WorldContextObject, ECharacterClass CharacterClass, int32 CharacterLevel);
+	
 	UFUNCTION(BlueprintCallable, Category = "AuraAbilitySysstemLibrary|ClassDefaults")
 	static UCharacterClassInfo* GetCharacterClassInfo(const UObject* WorldContextObject);
 
@@ -55,4 +58,6 @@ public:
 
 	UFUNCTION(BlueprintPure, BlueprintCallable, Category = "AuraAbilitySysstemLibrary|GameplayEffects")
 	static bool IsNotFriend(AActor* FirstActor, AActor* SecondActor);
+
+	
 };

@@ -23,6 +23,8 @@ AAuraCharacterBase::AAuraCharacterBase()
 	Weapon = CreateDefaultSubobject<USkeletalMeshComponent>("Weapon");
 	Weapon->SetupAttachment(GetMesh(), FName("WeaponHandSocket"));
 	Weapon->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+
 }
 
 UAbilitySystemComponent* AAuraCharacterBase::GetAbilitySystemComponent() const
@@ -127,6 +129,11 @@ void AAuraCharacterBase::IncrementMinionCount_Implementation(int32 Increment)
 	MinionCount += Increment;
 }
 
+ECharacterClass AAuraCharacterBase::GetCharacterClass_Implementation()
+{
+	return CharacterClass;
+}
+
 
 void AAuraCharacterBase::InitAbilityActorInfo()
 {
@@ -156,6 +163,7 @@ void AAuraCharacterBase::AddCharacterAbilities()
 	if(!HasAuthority()) return;
 
 	AuraASC->AddCharacterAbilities(StartupAbilities);
+	AuraASC->AddCharacterPassiveAbilities(StartupPassiveAbilities);
 }
 
 void AAuraCharacterBase::Dissolve()
