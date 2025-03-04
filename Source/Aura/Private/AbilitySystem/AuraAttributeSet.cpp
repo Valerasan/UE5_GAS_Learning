@@ -190,7 +190,6 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 		const float LocalIncomingXP = GetIncomingXP();
 		SetIncomingXP(0.f);
 
-		//TODO: See if we should level up
 
 		
 		// Source Character is the owner, since GA_ListenForEvents applies GE_EventBasedEffect, adding to IncomingXP
@@ -205,21 +204,18 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			if (NumOfLevelUps > 0)
 			{
 
-				//TODO: Get Attribute Point Reward and Spell Points Reward
-				const int32 AttributePointsReward = IPlayerInterface::Execute_GetAttributePointReward(Props.SourceCharacter, CurrentLevel);
-				const int32 SpellPointsReward = IPlayerInterface::Execute_GetSpellPointReward(Props.SourceCharacter, CurrentLevel);
+				const int32 AttributePointsReward = IPlayerInterface::Execute_GetAttributePointsReward(Props.SourceCharacter, CurrentLevel);
+				const int32 SpellPointsReward = IPlayerInterface::Execute_GetSpellPointsReward(Props.SourceCharacter, CurrentLevel);
 
 				IPlayerInterface::Execute_AddToPlayerLevel(Props.SourceCharacter, NumOfLevelUps);
-				IPlayerInterface::Execute_AddToAttributePointReward(Props.SourceCharacter, AttributePointsReward);
-				IPlayerInterface::Execute_AddToSpellPointReward(Props.SourceCharacter, SpellPointsReward);
+				IPlayerInterface::Execute_AddToAttributePoints(Props.SourceCharacter, AttributePointsReward);
+				IPlayerInterface::Execute_AddToSpellPointsReward(Props.SourceCharacter, SpellPointsReward);
 
 				SetHealth(GetMaxHealth());
-				SetMana(GetMaxMana());
+
+				bTopOfHealth = true;
+				bTopOfMana = true;
 				
-				// AddToPlayerLevel()
-				// AddToAttributePoints
-				// AddToSpellPoints
-				// Fill up health and Mana
 				
 				IPlayerInterface::Execute_LevelUp(Props.SourceCharacter);
 			}
@@ -227,6 +223,24 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 			IPlayerInterface::Execute_AddToXP(Props.SourceCharacter, LocalIncomingXP);
 		}
 	}
+}
+
+void UAuraAttributeSet::PostAttributeChange(const FGameplayAttribute& Attribute, float OldValue, float NewValue)
+{
+	Super::PostAttributeChange(Attribute, OldValue, NewValue);
+
+	if (Attribute == GetMaxHealthAttribute() && bTopOfHealth)
+	{
+		SetHealth(GetMaxHealth());
+		bTopOfHealth = false;
+	}
+
+	if (Attribute == GetMaxManaAttribute() && bTopOfMana)
+	{
+		SetMana(GetMaxMana());
+		bTopOfMana = false;
+	}
+	
 }
 
 void UAuraAttributeSet::ShowFloatingText(const FEffectProperties& Props, float Damage, bool bIsBlocked, bool bCriticalHit) const 
